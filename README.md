@@ -37,6 +37,20 @@ It was developed as part of **TBANLT 433 A coursework** to practice building str
 
 ---
 
+### Example Visualizations
+
+Here’s one of my project outputs:
+
+![Project 1](Project%20.png)
+
+Another visualization:
+
+![Project 2](Project%204%20.png)
+
+Another example:
+
+![Project 3](Project%204%201.png)
+
 ### Future Work
 * Add **CSS styling** for visual enhancements.  
 * Include **interactive elements** (tables, plots, or JavaScript).  
