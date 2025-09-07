@@ -1,0 +1,96 @@
+---
+title: "Project 4"
+author: "Lul Akeza"
+date: "2025-08-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(modeldata)
+library(caret)
+library(e1071)
+options(repos = c(CRAN = "https://cran.r-project.org"))
+```
+
+#Summary statistics
+```{r Summary statistics}
+
+marketing_data <- read_csv("WA_Marketing-Campaign.csv")
+head(marketing_data)
+
+numeric_vars <- marketing_data %>%
+  select(where(is.numeric)) %>%
+  select(-MarketID, -LocationID)
+
+colnames(numeric_vars)
+
+summary_stats <- numeric_vars %>%
+  summarise(
+    across(everything(),
+           list(
+             mean = ~mean(.),
+             variance = ~var(.),
+             max = ~max(.),
+             min = ~min(.)
+           ))
+  )
+
+summary_stats
+
+```
+
+# Visualizations of the data using graphical functions
+```{r Visualizations of the data using graphical functions}
+
+str(marketing_data)
+head(marketing_data)
+
+
+ggplot(marketing_data, aes(x = SalesInThousands)) +
+  geom_histogram(binwidth = 50, fill = "pink", color = "black") +
+  labs(title = "Histogram of Sales in Thousands", x = "Sales (Thousands)", y = "Count")
+
+ggplot(marketing_data, aes(x = MarketSize, y = SalesInThousands, fill = MarketSize)) +
+  geom_boxplot(color = "black") +
+  scale_fill_manual(values = c("pink", "hotpink", "deeppink")) + 
+  labs(title = "Sales Distribution by Market Size", 
+       x = "Market Size", 
+       y = "Sales (Thousands)")
+
+ggplot(marketing_data, aes(x = AgeOfStore, y = SalesInThousands)) +
+  geom_point(color = "black", fill = "pink", shape = 21, size = 3) + 
+  geom_smooth(method = "lm", se = FALSE, color = "black") +
+  labs(title = "Sales vs Age of Store", x = "Age of Store", y = "Sales (Thousands)")
+
+```
+
+#T-test  - identify the two comparative populations
+```{r T-test  - identify the two comparative populations}
+marketing_data <- read.csv("WA_Marketing-Campaign-1.csv")
+
+str(marketing_data)
+medium_sales <- subset(marketing_data, MarketSize == "Medium")$SalesInThousands
+medium_sales
+large_sales  <- subset(marketing_data, MarketSize == "Large")$SalesInThousands
+large_sales
+
+t_test_result <- t.test(medium_sales, large_sales, var.equal = TRUE)
+t_test_result
+
+```
+
+#ANOVA - identify the comparative populations and variables to carry out the ANOVA
+```{r ANOVA - identify the comparative populations and variables to carry out the ANOVA}
+blood <- read.csv("~/Downloads/TBANLT 433 A/bloodpressuredrug (1).csv")
+
+head(blood)
+colnames(blood)
+
+anova_result <- aov(Blood.pressure ~ Drug, data = blood)
+summary(anova_result)
+TukeyHSD(anova_result)
+
+
+```
